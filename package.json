@@ -26,7 +26,8 @@
     "mocha": "^2.5.3",
     "chai": "^3.5.0",
     "coffee-script": "^1.10.0",
-    "hubot-test-helper": "^1.4.4"
+    "hubot-test-helper": "^1.4.4",
+    "co": "^4.6.0"
   },
   "engines": {
     "node": "6.2.0"
