@@ -12,12 +12,25 @@ describe 'kanban', ->
   afterEach ->
     room.destroy()
 
+  #### Features of kanban
+
   context 'user asks Hubot to add a task to kanban', ->
     beforeEach ->
       room.user.say 'yuki', 'kanban add task1'
 
     it 'should add a task to brain', ->
       expect(room.robot.brain.data.kanban).to.eql ['task1']
+  
+  context 'user asks Hubot to add a empty task to kanban', ->
+    beforeEach ->
+      room.user.say 'yuki', 'kanban add '
+
+    it 'should add a task to brain', ->
+      expect(room.robot.brain.data.kanban).to.eql []
+      expect(room.messages).to.eql [
+        ['yuki', 'kanban add ']
+        ['hubot', '@yuki Can not add empty task']
+      ]
   
   context 'user asks Hubot to show kanban list', ->
     beforeEach ->
@@ -42,3 +55,18 @@ describe 'kanban', ->
 
     it 'should delete a task from brain', ->
       expect(room.robot.brain.data.kanban).to.eql []
+  
+  context 'user asks Hubot to create todo list from kanban', ->
+    beforeEach ->
+      room.robot.brain.data.kanban = ['task1', 'task2', 'task3', 'task4', 'task5']
+      room.user.say 'yuki', 'kanban todo 1, 3, 5'
+
+    it 'should create todo list from brain', ->
+      expect(room.robot.brain.data.kanban).to.eql ['task2', 'task4']
+      expect(room.robot.brain.data.todo).to.eql ['task1', 'task3', 'task5']
+      expect(room.messages).to.eql [
+        ['yuki', 'kanban todo 1, 3, 5']
+        ['hubot', '@yuki Today:\n1. task1\n2. task3\n3. task5\n']
+      ]
+  
+  #### Features of todo list

@@ -2,9 +2,13 @@
 
 module.exports = (robot) ->
   robot.brain.data.kanban = []
+  robot.brain.data.todo = []
   robot.hear /kanban add (.*)$/i, (res) ->
-    robot.brain.data.kanban.push(res.match[1])
-    res.reply 'Added kanban to ' + res.match[1]
+    if res.match[1] == ''
+      res.reply 'Can not add empty task'
+    else
+      robot.brain.data.kanban.push(res.match[1])
+      res.reply 'Added kanban to ' + res.match[1]
 
   robot.hear /kanban list/i, (res) ->
     messages = '\n'
@@ -18,3 +22,20 @@ module.exports = (robot) ->
       task = robot.brain.data.kanban[index]
       robot.brain.data.kanban.splice(index, 1)
     res.reply 'Deleted ' + task
+  
+  robot.hear /kanban todo (.*)/ig, (res) ->
+    indexStrList = res.match[0].split(',')
+    for indexStr, i in indexStrList
+      if i == 0
+        index = parseInt(indexStr.replace('kanban todo ', ''), 10) - 1
+      else
+        index = parseInt(indexStr, 10) - 1
+      if index < robot.brain.data.kanban.length
+        robot.brain.data.todo.push(robot.brain.data.kanban[index])
+        robot.brain.data.kanban.splice(index, 1, '')
+    for task, n in robot.brain.data.kanban
+      if robot.brain.data.kanban[n] == ''
+        robot.brain.data.kanban.splice(n, 1)
+    messages = 'Today:\n'
+    messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.todo
+    res.reply messages
