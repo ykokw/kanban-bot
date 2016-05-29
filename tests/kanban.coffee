@@ -34,3 +34,11 @@ describe 'kanban', ->
         ['yuki', 'kanban list']
         ['hubot', '@yuki \n1. task1\n2. task2\n']
       ]
+  
+  context 'user asks Hubot to delete task from kanban', ->
+    beforeEach ->
+      room.user.say 'yuki', 'kanban add task1'
+      room.user.say 'yuki', 'kanban del 1'
+
+    it 'should delete a task from brain', ->
+      expect(room.robot.brain.data.kanban).to.eql []
