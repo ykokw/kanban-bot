@@ -46,3 +46,10 @@ module.exports = (robot) ->
       task = robot.brain.data.todo[index]
       robot.brain.data.todo.splice(index, 1, '')
     res.reply 'Done: ' + task
+
+  robot.hear /todo list/i, (res) ->
+    messages = 'Today:\n'
+    for task, i in robot.brain.data.todo
+      continue if task == ''
+      messages = messages + (i + 1) + '. ' + task + '\n'
+    res.reply messages;

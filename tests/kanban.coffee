@@ -85,3 +85,13 @@ describe 'kanban', ->
         ['hubot', '@yuki Done: task2']
       ]
 
+  context 'user asks Hubot to show todo list', ->
+    beforeEach ->
+      room.robot.brain.data.todo = ['task1', '', 'task3']
+      room.user.say 'yuki', 'todo list'
+
+    it 'should return todo list', ->
+      expect(room.messages).to.eql [
+        ['yuki', 'todo list']
+        ['hubot', '@yuki Today:\n1. task1\n3. task3\n']
+      ]
