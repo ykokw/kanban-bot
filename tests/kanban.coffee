@@ -70,3 +70,18 @@ describe 'kanban', ->
       ]
   
   #### Features of todo list
+
+  context 'user says to hubot that the task is done', ->
+    beforeEach ->
+      room.robot.brain.data.todo = ['task1', 'task2', 'task3']
+      room.user.say 'yuki', 'todo done 2'
+
+    it 'should delete a task from todo list', ->
+      # todo list keeps index of todo list
+      # the completed task is set empty string
+      expect(room.robot.brain.data.todo).to.eql ['task1', '', 'task3']
+      expect(room.messages).to.eql [
+        ['yuki', 'todo done 2']
+        ['hubot', '@yuki Done: task2']
+      ]
+

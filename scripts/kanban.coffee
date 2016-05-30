@@ -39,3 +39,10 @@ module.exports = (robot) ->
     messages = 'Today:\n'
     messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.todo
     res.reply messages
+  
+  robot.hear /todo done ([0-9]*)/i, (res) ->
+    index = parseInt(res.match[1], 10) - 1
+    if index < robot.brain.data.todo.length
+      task = robot.brain.data.todo[index]
+      robot.brain.data.todo.splice(index, 1, '')
+    res.reply 'Done: ' + task
