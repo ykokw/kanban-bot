@@ -16,7 +16,7 @@ module.exports = (robot) ->
     else 
       messages = '\n'
       messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.kanban
-      res.reply messages;
+      res.reply messages
   
   robot.hear /kanban del ([0-9]*)/i, (res) ->
     index = parseInt(res.match[1], 10) - 1
@@ -58,11 +58,11 @@ module.exports = (robot) ->
       for task, i in robot.brain.data.todo
         if task != ''
           messages = messages + (i + 1) + '. ' + task + '\n'
-      res.reply messages;
+      res.reply messages
   
   robot.hear /todo reset/i, (res) ->
     for task, i in robot.brain.data.todo
       continue if task == ''
       robot.brain.data.kanban.push(task)
     robot.brain.data.todo = []
-    res.reply 'All task moved to kanban list';
+    res.reply 'All task moved to kanban list'
