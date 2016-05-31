@@ -11,9 +11,12 @@ module.exports = (robot) ->
       res.reply 'Added kanban to ' + res.match[1]
 
   robot.hear /kanban list/i, (res) ->
-    messages = '\n'
-    messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.kanban
-    res.reply messages;
+    if robot.brain.data.kanban.length == 0
+      res.reply 'Nothing task in kanban' 
+    else 
+      messages = '\n'
+      messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.kanban
+      res.reply messages;
   
   robot.hear /kanban del ([0-9]*)/i, (res) ->
     index = parseInt(res.match[1], 10) - 1
@@ -48,11 +51,14 @@ module.exports = (robot) ->
     res.reply 'Done: ' + task
 
   robot.hear /todo list/i, (res) ->
-    messages = 'Today:\n'
-    for task, i in robot.brain.data.todo
-      if task != ''
-        messages = messages + (i + 1) + '. ' + task + '\n'
-    res.reply messages;
+    if robot.brain.data.todo.length == 0
+      res.reply 'Nothing to do !' 
+    else
+      messages = 'Today:\n'
+      for task, i in robot.brain.data.todo
+        if task != ''
+          messages = messages + (i + 1) + '. ' + task + '\n'
+      res.reply messages;
   
   robot.hear /todo reset/i, (res) ->
     for task, i in robot.brain.data.todo

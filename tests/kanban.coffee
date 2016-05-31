@@ -47,6 +47,16 @@ describe 'kanban', ->
         ['yuki', 'kanban list']
         ['hubot', '@yuki \n1. task1\n2. task2\n']
       ]
+
+  context 'user asks Hubot to show empty kanban list', ->
+    beforeEach ->
+      room.user.say 'yuki', 'kanban list'
+
+    it 'should return message', ->
+      expect(room.messages).to.eql [
+        ['yuki', 'kanban list']
+        ['hubot', '@yuki Nothing task in kanban']
+      ]
   
   context 'user asks Hubot to delete task from kanban', ->
     beforeEach ->
@@ -96,6 +106,16 @@ describe 'kanban', ->
         ['hubot', '@yuki Today:\n1. task1\n3. task3\n']
       ]
   
+  context 'user asks Hubot to show empty todo list', ->
+    beforeEach ->
+      room.user.say 'yuki', 'todo list'
+
+    it 'should return message', ->
+      expect(room.messages).to.eql [
+        ['yuki', 'todo list']
+        ['hubot', '@yuki Nothing to do !']
+      ]
+  
   context 'user asks Hubot to reset todo list', ->
     beforeEach ->
       room.robot.brain.data.kanban = ['task4', 'task5']
@@ -109,3 +129,4 @@ describe 'kanban', ->
         ['yuki', 'todo reset']
         ['hubot', '@yuki All task moved to kanban list']
       ]
+
