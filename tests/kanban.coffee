@@ -95,3 +95,17 @@ describe 'kanban', ->
         ['yuki', 'todo list']
         ['hubot', '@yuki Today:\n1. task1\n3. task3\n']
       ]
+  
+  context 'user asks Hubot to reset todo list', ->
+    beforeEach ->
+      room.robot.brain.data.kanban = ['task4', 'task5']
+      room.robot.brain.data.todo = ['task1', '', 'task3']
+      room.user.say 'yuki', 'todo reset'
+
+    it 'should reset todo list', ->
+      expect(room.robot.brain.data.kanban).to.eql ['task4', 'task5', 'task1', 'task3']
+      expect(room.robot.brain.data.todo).to.eql []
+      expect(room.messages).to.eql [
+        ['yuki', 'todo reset']
+        ['hubot', '@yuki All task moved to kanban list']
+      ]

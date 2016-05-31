@@ -53,3 +53,10 @@ module.exports = (robot) ->
       continue if task == ''
       messages = messages + (i + 1) + '. ' + task + '\n'
     res.reply messages;
+  
+  robot.hear /todo reset/i, (res) ->
+    for task, i in robot.brain.data.todo
+      continue if task == ''
+      robot.brain.data.kanban.push(task)
+    robot.brain.data.todo = []
+    res.reply 'All task moved to kanban list';
