@@ -50,8 +50,8 @@ module.exports = (robot) ->
   robot.hear /todo list/i, (res) ->
     messages = 'Today:\n'
     for task, i in robot.brain.data.todo
-      continue if task == ''
-      messages = messages + (i + 1) + '. ' + task + '\n'
+      if task != ''
+        messages = messages + (i + 1) + '. ' + task + '\n'
     res.reply messages;
   
   robot.hear /todo reset/i, (res) ->
