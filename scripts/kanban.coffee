@@ -8,7 +8,7 @@ module.exports = (robot) ->
       res.reply 'Can not add empty task'
     else
       robot.brain.data.kanban.push(res.match[1])
-      res.reply 'Added kanban to ' + res.match[1]
+      res.reply 'Added ' + res.match[1] + ' to kanban'
 
   robot.hear /kanban list/i, (res) ->
     if robot.brain.data.kanban.length == 0

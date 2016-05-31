@@ -43,7 +43,7 @@ describe 'kanban', ->
       expect(room.robot.brain.data.kanban).to.eql ['task1', 'task2']
       expect(room.messages).to.eql [
         ['yuki', 'kanban add task2']
-        ['hubot', '@yuki Added kanban to task2']
+        ['hubot', '@yuki Added task2 to kanban']
         ['yuki', 'kanban list']
         ['hubot', '@yuki \n1. task1\n2. task2\n']
       ]
