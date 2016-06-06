@@ -134,3 +134,35 @@ describe 'kanban', ->
         ['hubot', '@yuki All task moved to kanban list']
       ]
 
+  context 'user asks Hubot to show result of completed todo list', ->
+    beforeEach ->
+      room.robot.brain.data.todo = ['task1', 'task2']
+      co =>
+        yield room.user.say 'yuki', 'todo done 1'
+        yield room.user.say 'yuki', 'todo done 2'
+        yield room.user.say 'yuki', 'result show'
+
+    it 'should shows result', ->
+      expect(room.robot.brain.data.result).to.eql ['task1', 'task2']
+      expect(room.robot.brain.data.todo).to.eql ['', '']
+      expect(room.messages).to.eql [
+        ['yuki', 'todo done 1']
+        ['hubot', '@yuki Done: task1']
+        ['yuki', 'todo done 2']
+        ['hubot', '@yuki Done: task2']
+        ['yuki', 'result show']
+        ['hubot', '@yuki Result:\n```\n- task1\n- task2\n```\n']
+      ]
+
+  context 'user asks Hubot to reset result of completed result', ->
+    beforeEach ->
+      room.robot.brain.data.result = ['task1', 'task2']
+      co =>
+        yield room.user.say 'yuki', 'result reset'
+
+    it 'should reset result', ->
+      expect(room.robot.brain.data.result).to.eql []
+      expect(room.messages).to.eql [
+        ['yuki', 'result reset']
+        ['hubot', '@yuki Result of completed tasks is reset']
+      ]

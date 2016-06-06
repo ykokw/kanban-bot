@@ -3,6 +3,7 @@
 module.exports = (robot) ->
   robot.brain.data.kanban = []
   robot.brain.data.todo = []
+  robot.brain.data.result = []
   robot.hear /kanban add (.*)$/i, (res) ->
     if res.match[1] == ''
       res.reply 'Can not add empty task'
@@ -49,6 +50,7 @@ module.exports = (robot) ->
     index = parseInt(res.match[1], 10) - 1
     if index < robot.brain.data.todo.length
       task = robot.brain.data.todo[index]
+      robot.brain.data.result.push(task)
       robot.brain.data.todo.splice(index, 1, '')
     res.reply 'Done: ' + task
 
@@ -69,3 +71,18 @@ module.exports = (robot) ->
       robot.brain.data.kanban.push(task)
     robot.brain.data.todo = []
     res.reply 'All task moved to kanban list'
+  
+  robot.hear /result show/i, (res) ->
+    if robot.brain.data.result.length == 0
+      res.reply 'No complated task...'
+    else
+      messages = 'Result:\n```\n'
+      for task, i in robot.brain.data.result
+        if task != ''
+          messages = messages + '- ' + task + '\n'
+      messages = messages + '```\n'
+      res.reply messages
+
+  robot.hear /result reset/i, (res) ->
+    robot.brain.data.result = []
+    res.reply 'Result of completed tasks is reset'
