@@ -14,8 +14,9 @@ module.exports = (robot) ->
     if robot.brain.data.kanban.length == 0
       res.reply 'Nothing task in kanban' 
     else 
-      messages = '\n'
+      messages = '\n```\n'
       messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.kanban
+      messages = messages + '```\n'
       res.reply messages
   
   robot.hear /kanban del ([0-9]*)/i, (res) ->
@@ -39,8 +40,9 @@ module.exports = (robot) ->
     for task, n in robot.brain.data.kanban
       if robot.brain.data.kanban[n] == ''
         robot.brain.data.kanban.splice(n, 1)
-    messages = 'Today:\n'
+    messages = 'Today:\n```\n'
     messages = messages + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.todo
+    messages = messages + '```\n'
     res.reply messages
   
   robot.hear /todo done ([0-9]*)/i, (res) ->
@@ -54,10 +56,11 @@ module.exports = (robot) ->
     if robot.brain.data.todo.length == 0
       res.reply 'Nothing to do !' 
     else
-      messages = 'Today:\n'
+      messages = 'Today:\n```\n'
       for task, i in robot.brain.data.todo
         if task != ''
           messages = messages + (i + 1) + '. ' + task + '\n'
+      messages = messages + '```\n'
       res.reply messages
   
   robot.hear /todo reset/i, (res) ->
