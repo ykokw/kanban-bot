@@ -134,6 +134,8 @@ describe 'kanban', ->
         ['hubot', '@yuki All task moved to kanban list']
       ]
 
+  #### Features of result of completed tasks
+
   context 'user asks Hubot to show result of completed todo list', ->
     beforeEach ->
       room.robot.brain.data.todo = ['task1', 'task2']
@@ -165,4 +167,17 @@ describe 'kanban', ->
       expect(room.messages).to.eql [
         ['yuki', 'result reset']
         ['hubot', '@yuki Result of completed tasks is reset']
+      ]
+
+  #### Other test
+
+  context 'user asks Hubot with messages that is included multiple space', ->
+    beforeEach ->
+      co =>
+        yield room.user.say 'yuki', 'kanban  list'
+
+    it 'should not ignore message that is included multiple space', ->
+      expect(room.messages).to.eql [
+        ['yuki', 'kanban  list']
+        ['hubot', '@yuki Nothing task in kanban']
       ]
