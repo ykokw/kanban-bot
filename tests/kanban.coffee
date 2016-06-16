@@ -45,7 +45,7 @@ describe 'kanban', ->
         ['yuki', 'kanban add task2']
         ['hubot', '@yuki Added task2 to kanban']
         ['yuki', 'kanban list']
-        ['hubot', '@yuki \n```\n1. task1\n2. task2\n```\n']
+        ['hubot', '@yuki \n- 1. task1\n- 2. task2\n']
       ]
 
   context 'user asks Hubot to show empty kanban list', ->
@@ -76,7 +76,7 @@ describe 'kanban', ->
       expect(room.robot.brain.data.todo).to.eql ['task1', 'task3', 'task5']
       expect(room.messages).to.eql [
         ['yuki', 'kanban todo 1, 3, 5']
-        ['hubot', '@yuki Today:\n```\n1. task1\n2. task3\n3. task5\n```\n']
+        ['hubot', '@yuki Today:\n- 1. task1\n- 2. task3\n- 3. task5\n']
       ]
   
   #### Features of todo list
@@ -96,7 +96,7 @@ describe 'kanban', ->
         ['yuki', 'todo done 2']
         ['hubot', '@yuki Done: task2']
         ['yuki', 'todo list']
-        ['hubot', '@yuki Today:\n```\n1. task1\n3. task3\n```\n']
+        ['hubot', '@yuki Today:\n- 1. task1\n- 3. task3\n']
       ]
 
   context 'user asks Hubot to show todo list', ->
@@ -107,7 +107,7 @@ describe 'kanban', ->
     it 'should return todo list', ->
       expect(room.messages).to.eql [
         ['yuki', 'todo list']
-        ['hubot', '@yuki Today:\n```\n1. task1\n3. task3\n```\n']
+        ['hubot', '@yuki Today:\n- 1. task1\n- 3. task3\n']
       ]
   
   context 'user asks Hubot to show empty todo list', ->
