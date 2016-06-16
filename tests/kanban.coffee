@@ -79,6 +79,17 @@ describe 'kanban', ->
         ['hubot', '@yuki Today:\n- 1. task1\n- 2. task3\n- 3. task5\n']
       ]
   
+  context 'use asks Hubot to import kanban list', ->
+    beforeEach ->
+      room.robot.brain.data.kanban = ['task1', 'task2']
+      room.user.say 'yuki', 'kanban import \ntask3\ntask4\ntask5'
+    it 'should import task list to brain', ->
+      expect(room.messages).to.eql [
+        ['yuki', 'kanban import \ntask3\ntask4\ntask5']
+        ['hubot', '@yuki \n- 1. task1\n- 2. task2\n- 3. task3\n- 4. task4\n- 5. task5\n']
+      ]
+      expect(room.robot.brain.data.kanban).to.eql ['task1', 'task2', 'task3','task4', 'task5']
+
   #### Features of todo list
 
   context 'user says to hubot that the task is done', ->

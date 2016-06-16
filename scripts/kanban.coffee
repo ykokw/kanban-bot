@@ -43,7 +43,18 @@ module.exports = (robot) ->
     messages = 'Today:\n'
     messages = messages + '- ' + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.todo
     res.reply messages
-  
+
+  robot.hear /kanban\s*import\s*([\s\S]*)/i, (res) ->
+    messages = ""
+    str = res.match[1]
+    taskList = str.split('\n')
+    for task in taskList
+      if task != ''
+        robot.brain.data.kanban.push(task)
+    messages = '\n'
+    messages = messages + '- ' +  (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.kanban
+    res.reply messages
+
   robot.hear /todo\s*done\s*([0-9]*)/i, (res) ->
     index = parseInt(res.match[1], 10) - 1
     if index < robot.brain.data.todo.length
