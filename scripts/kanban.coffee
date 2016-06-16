@@ -31,15 +31,17 @@ module.exports = (robot) ->
     indexStrList = res.match[0].split(',')
     for indexStr, i in indexStrList
       if i == 0
-        index = parseInt(indexStr.replace('kanban todo ', ''), 10) - 1
+        index = parseInt(indexStr.replace(/kanban\s*todo\s*/, ''), 10) - 1
       else
-        index = parseInt(indexStr, 10) - 1
+        index = parseInt(indexStr.replace(/\s*/, ''), 10) - 1
       if index < robot.brain.data.kanban.length
         robot.brain.data.todo.push(robot.brain.data.kanban[index])
         robot.brain.data.kanban.splice(index, 1, '')
+    newList = []
     for task, n in robot.brain.data.kanban
-      if robot.brain.data.kanban[n] == ''
-        robot.brain.data.kanban.splice(n, 1)
+      if robot.brain.data.kanban[n] != ''
+        newList.push(robot.brain.data.kanban[n])
+    robot.brain.data.kanban = newList
     messages = 'Today:\n'
     messages = messages + '- ' + (i + 1) + '. ' + task + '\n' for task, i in robot.brain.data.todo
     res.reply messages

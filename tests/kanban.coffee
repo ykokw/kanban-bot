@@ -69,14 +69,14 @@ describe 'kanban', ->
   context 'user asks Hubot to create todo list from kanban', ->
     beforeEach ->
       room.robot.brain.data.kanban = ['task1', 'task2', 'task3', 'task4', 'task5']
-      room.user.say 'yuki', 'kanban todo 1, 3, 5'
+      room.user.say 'yuki', 'kanban todo 1, 2, 4'
 
     it 'should create todo list from brain', ->
-      expect(room.robot.brain.data.kanban).to.eql ['task2', 'task4']
-      expect(room.robot.brain.data.todo).to.eql ['task1', 'task3', 'task5']
+      expect(room.robot.brain.data.kanban).to.eql ['task3', 'task5']
+      expect(room.robot.brain.data.todo).to.eql ['task1', 'task2', 'task4']
       expect(room.messages).to.eql [
-        ['yuki', 'kanban todo 1, 3, 5']
-        ['hubot', '@yuki Today:\n- 1. task1\n- 2. task3\n- 3. task5\n']
+        ['yuki', 'kanban todo 1, 2, 4']
+        ['hubot', '@yuki Today:\n- 1. task1\n- 2. task2\n- 3. task4\n']
       ]
   
   context 'use asks Hubot to import kanban list', ->
