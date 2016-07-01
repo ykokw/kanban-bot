@@ -150,6 +150,7 @@ describe 'kanban', ->
   context 'user asks Hubot to show result of completed todo list', ->
     beforeEach ->
       room.robot.brain.data.todo = ['task1', 'task2']
+      room.robot.brain.data.completedNumber = [30, 40]
       co =>
         yield room.user.say 'yuki', 'todo done 1'
         yield room.user.say 'yuki', 'todo done 2'
@@ -158,14 +159,26 @@ describe 'kanban', ->
     it 'should shows result', ->
       expect(room.robot.brain.data.result).to.eql ['task1', 'task2']
       expect(room.robot.brain.data.todo).to.eql ['', '']
+      expect(room.robot.brain.data.completedNumber).to.eql [30,40,20]
       expect(room.messages).to.eql [
         ['yuki', 'todo done 1']
         ['hubot', '@yuki Done: task1']
         ['yuki', 'todo done 2']
         ['hubot', '@yuki Done: task2']
         ['yuki', 'result show']
-        ['hubot', '@yuki Result:\n```\n- task1\n- task2\n```\n']
+        ['hubot', '@yuki Result:\n```\n- task1\n- task2\n```\nCompleted task number: 2\nhttp://chart.apis.google.com/chart?chs=600x150&chd=t:30,40,20&cht=lc\n']
       ]
+
+  context 'user asks Hubot to show result with 7 completed number data', ->
+    beforeEach ->
+      room.robot.brain.data.result = ['task1', 'task2']
+      room.robot.brain.data.completedNumber = [10,20,30,40,50,60,70]
+      co =>
+        yield room.user.say 'yuki', 'result show'
+
+    it 'should shift older data from completedNumber array', ->
+      expect(room.robot.brain.data.completedNumber).to.eql [20,30,40,50,60,70,20]
+
 
   context 'user asks Hubot to reset result of completed result', ->
     beforeEach ->

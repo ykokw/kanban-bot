@@ -4,6 +4,7 @@ module.exports = (robot) ->
   robot.brain.data.kanban = []
   robot.brain.data.todo = []
   robot.brain.data.result = []
+  robot.brain.data.completedNumber = [0,0,0,0,0,0,0]
   robot.hear /kanban\s*add (.*)$/i, (res) ->
     if res.match[1] == ''
       res.reply 'Can not add empty task'
@@ -86,11 +87,24 @@ module.exports = (robot) ->
     if robot.brain.data.result.length == 0
       res.reply 'No complated task...'
     else
+      currentCompletedNumber = robot.brain.data.result.length
+      robot.brain.data.completedNumber.push(currentCompletedNumber * 10)
+      if robot.brain.data.completedNumber.length > 7
+        robot.brain.data.completedNumber.shift()
+
+      chartUrl = 'http://chart.apis.google.com/chart'
+      chs = '?chs=600x150'
+      chd = '&chd=t:' + robot.brain.data.completedNumber.join(',')
+      cht = '&cht=lc'
+
       messages = 'Result:\n```\n'
       for task, i in robot.brain.data.result
         if task != ''
           messages = messages + '- ' + task + '\n'
-      messages = messages + '```\n'
+      messages = messages + '```\n' +
+        'Completed task number: ' + currentCompletedNumber + '\n' +
+        chartUrl + chs + chd + cht + '\n'
+
       res.reply messages
 
   robot.hear /result\s*reset/i, (res) ->
