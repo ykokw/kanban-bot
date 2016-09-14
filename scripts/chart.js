@@ -8,21 +8,16 @@ module.exports = {
     co(function*() {
       const instance = yield phantom.create();
       const page = yield instance.createPage();
-      const html = '<html><head><script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">google.charts.load("current", {"packages":["corechart"]});</script></head><body><div id="chart"><p>test</p></div></body></html>';
-      const width = 800;
-      const height = 400;
-      page.viewportSize = { width: width, height: height};
+      const html = '<html><head><script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">google.charts.load("current", {"packages":["corechart"]});</script></head><body><div id="chart"></div></body></html>';
+      const width = 600;
+      const height = 300;
       page.setContent(html, "");
       page.on("onConsoleMessage", function(msg){
-        //console.log(msg);
-        page.render('chart.jpeg', {format: 'jpeg', quality: '100'});
+        page.render('chart.png', {format: 'png', quality: '100'});
         page.close();
         instance.exit();
       });
       page.on("onLoadFinished", function(){
-        page.property("content").then(function(data){
-          console.log("result HTML: " + JSON.stringify(data));
-        });
         page.evaluate(function (args, width, height){
           google.charts.setOnLoadCallback(function (){
             console.log(JSON.stringify(google.charts));

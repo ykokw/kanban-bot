@@ -23,7 +23,8 @@
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.4.2",
     "phantom": "^2.1.17",
-    "co": "^4.6.0"
+    "co": "^4.6.0",
+    "request": "2.74.0"
   },
   "devDependencies": {
     "mocha": "^2.5.3",
